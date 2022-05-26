@@ -1,4 +1,4 @@
-# Day 00 - Go Piscine
+# Day 00 - Go Intensive
 
 ## Statistics being handy
 
