@@ -1,4 +1,4 @@
-# Day 00 - Go Intensive
+# Day 00 - Go Boot camp
 
 ## Statistics being handy
 
@@ -48,10 +48,10 @@ we get - the more weighted decision we will able to make at the end, isn't it?
 <h3 id="ex00">Exercise 00: Anscombe</h3>
 
 
-So, let's assume we have a bunch of integer numbers between -100000 and 100000. It may probably be
-a large set, so let's assume our application will read it from a standard input, separated by 
-newlines. Right now let's think of four major statistical metrics that we can derive from this 
-data, so by default we can print all of them as a result, for example, like this:
+So, let's say we have a bunch of integer numbers, strictly between -100000 and 100000. It may 
+probably be a large set, so let's assume our application will read it from a standard input, 
+separated by newlines. Right now let's think of four major statistical metrics that we can derive
+from this data, so by default we can print all of them as a result, for example, like this:
 
 ```
 Mean: 8.2
