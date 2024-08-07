@@ -1,3 +1,3 @@
 #RUN TEST
-all:
+test:
 	go test ./pkg/... -v
