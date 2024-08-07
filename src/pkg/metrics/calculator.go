@@ -1,6 +1,7 @@
 package metrics
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"slices"
@@ -19,32 +20,54 @@ const (
 	Eps = 1e-9
 )
 
-func FindMean(nums []float64) float64 {
+func FindMean(nums []float64) (float64, error) {
 	var sum float64
+	var err error
+
+	if len(nums) == 0 {
+		err = errors.New("empty slice")
+		return 0, err
+	}
+
 	for i := 0; i < len(nums); i++ {
 		sum += nums[i]
 	}
-	return sum / float64(len(nums))
+
+	return sum / float64(len(nums)), err
 }
 
-func FindMedian(nums []float64) float64 {
+func FindMedian(nums []float64) (float64, error) {
+	var err error
 	var res float64
+
+	if len(nums) == 0 {
+		err = errors.New("empty slice")
+		return 0, err
+	}
+
 	half_size := len(nums) >> 1
 	if len(nums)&1 == 1 {
 		res = nums[half_size]
 	} else {
 		res = (nums[half_size] + nums[half_size-1]) / float64(2)
 	}
-	return res
+	return res, err
 }
 
-func FindMode(nums []float64) float64 {
+func FindMode(nums []float64) (float64, error) {
+	var err error
 	m := make(map[float64]int)
+	min_key := Eps
+	max_count := 0
+
+	if len(nums) == 0 {
+		err = errors.New("empty slice")
+		return 0, err
+	}
+
 	for i := 0; i < len(nums); i++ {
 		m[nums[i]]++
 	}
-	min_key := Eps
-	max_count := 0
 	for k, v := range m {
 		if max_count < v {
 			max_count = v
@@ -53,26 +76,36 @@ func FindMode(nums []float64) float64 {
 			min_key = k
 		}
 	}
-	return min_key
+	return min_key, err
 }
 
-func FindStandartDeviation(nums []float64) float64 {
+func FindStandartDeviation(nums []float64) (float64, error) {
 	var r float64
-	nums_mean := FindMean(nums)
+	var err error
+
+	if len(nums) == 0 {
+		err = errors.New("empty slice")
+		return 0, err
+	}
+
+	nums_mean, _ := FindMean(nums)
 	for _, v := range nums {
 		r += math.Pow((v - nums_mean), 2)
 	}
-	if len(nums) == 1 {
-		return .0
-	}
-	return math.Sqrt(r / float64(len(nums)-1))
+
+	return math.Sqrt(r / float64(len(nums))), err
 }
 
-func CalculateAllMetrics(nums []float64, answer map[Metric]float64) {
-	answer[Mean] = FindMean(nums)
-	answer[Median] = FindMedian(nums)
-	answer[Mode] = FindMode(nums)
-	answer[SD] = FindStandartDeviation(nums)
+func CalculateAllMetrics(nums []float64, answer map[Metric]float64) error {
+	if len(nums) == 0 {
+		return errors.New("empty slice")
+	}
+	answer[Mean], _ = FindMean(nums)
+	answer[Median], _ = FindMedian(nums)
+	answer[Mode], _ = FindMode(nums)
+	answer[SD], _ = FindStandartDeviation(nums)
+
+	return nil
 }
 
 func ConvertAnswerToStringSlice(answer map[Metric]float64) []string {
@@ -83,9 +116,10 @@ func ConvertAnswerToStringSlice(answer map[Metric]float64) []string {
 	return fanswer
 }
 
-func GetFormatedAnswer(nums []float64) []string {
+func GetFormatedAnswer(nums []float64) ([]string, error) {
+	var err error
 	slices.Sort(nums)
 	metric_vals := make(map[Metric]float64)
-	CalculateAllMetrics(nums, metric_vals)
-	return ConvertAnswerToStringSlice(metric_vals)
+	err = CalculateAllMetrics(nums, metric_vals)
+	return ConvertAnswerToStringSlice(metric_vals), err
 }

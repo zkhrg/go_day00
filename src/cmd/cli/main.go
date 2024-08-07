@@ -14,7 +14,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		return
 	}
-	answer := metrics.GetFormatedAnswer(nums)
+	answer, _ := metrics.GetFormatedAnswer(nums)
 	if err = cli.HandleUserFormatActions(answer); err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 	}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -55,6 +56,7 @@ func GetData() ([]float64, error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		line = strings.Trim(line, " 	")
 		if line == "!end" {
 			if len(nums) < 1 {
 				err = errors.New(no_nums_message)
