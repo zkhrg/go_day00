@@ -33,10 +33,19 @@ func HandleUserFormatActions(fanswer []string) error {
 	fmt.Println(after_typing_message)
 	fmt.Println(choose_message)
 
+	if len(fanswer) < 4 {
+		err = errors.New("few metrics to handle")
+	}
+
 	if scanner.Scan() {
 		user_answer = scanner.Text()
 	}
-	for i := 0; i < len(user_answer); i++ {
+
+	if len(user_answer) == 0 {
+		err = errors.New("user answer len is 0")
+	}
+
+	for i := 0; i < len(user_answer) && err == nil; i++ {
 		if user_answer[i]-'0' > 0 && user_answer[i]-'0' < 5 {
 			fmt.Println(fanswer[int(user_answer[i]-'0')-1])
 		} else {
